@@ -1,7 +1,6 @@
 export const useFeedback = () => {
 	const getFeedbacks = async (): Promise<unknown> => {
 		return useHttp('/api/feedbacks').then((val) => {
-			console.log({ data: val.data.value });
 			return val.data.value;
 		});
 	};

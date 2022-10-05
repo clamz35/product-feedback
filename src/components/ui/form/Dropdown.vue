@@ -1,22 +1,22 @@
 <template>
-  <div class="relative">
-    <InputWrapper
-      class="cursor-pointer"
-      :component="myComp"
-      :errorMessage="props.errorMessage"
-      @click="toggleOpen()"
-    ></InputWrapper>
-    <OverlayMenu
-      v-if="isOpen"
-      @click="toggleOpen()"
-      class="absolute top-0 z-10"
-    >
-      <OverlayMenuItem>
-        <SelectableItem>Feature</SelectableItem>
-      </OverlayMenuItem>
-      <OverlayMenuItem><SelectableItem>UX</SelectableItem></OverlayMenuItem>
-    </OverlayMenu>
-  </div>
+	<div class="relative">
+		<InputWrapper
+			class="cursor-pointer"
+			:component="myComp"
+			:errorMessage="props.errorMessage"
+			@click="toggleOpen()"
+		></InputWrapper>
+		<OverlayMenu
+			v-if="isOpen"
+			@click="toggleOpen()"
+			class="absolute top-0 z-10"
+		>
+			<OverlayMenuItem>
+				<SelectableItem>Feature</SelectableItem>
+			</OverlayMenuItem>
+			<OverlayMenuItem><SelectableItem>UX</SelectableItem></OverlayMenuItem>
+		</OverlayMenu>
+	</div>
 </template>
 <script lang="ts" setup>
 import OverlayMenu from '../OverlayMenu.vue';
@@ -34,6 +34,6 @@ const toggleOpen = () => (isOpen.value = !isOpen.value);
 
 <style lang="scss" scoped>
 .input {
-  background: none;
+	background: none;
 }
 </style>
