@@ -39,8 +39,9 @@ pre-commit:
   parallel: true
   commands:
     lint:
-      glob: "*.{js,ts,jsx,tsx,.vue}"
-      run: yarn lint {staged_files}
+      glob: "*.{js,ts,jsx,tsx,vue}"
+      run: yarn eslint {staged_files}
+
     format:
-      glob: "*.{js,ts,jsx,tsx,.vue}"
-      run: yarn format {staged_files}
+      glob: "*.{js,ts,jsx,tsx,vue}"
+      run: yarn prettier --write {staged_files}
