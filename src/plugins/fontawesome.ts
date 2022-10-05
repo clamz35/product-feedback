@@ -1,9 +1,9 @@
 import { config, dom, library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import {
-  faChevronLeft,
-  faLightbulb,
-  fas,
+	faChevronLeft,
+	faLightbulb,
+	fas,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -17,8 +17,8 @@ library.add(faChevronLeft);
 library.add(faLightbulb);
 
 export default defineNuxtPlugin((nuxtApp) => {
-  dom.watch();
-  nuxtApp.vueApp.component('FontAwesomeIcon', FontAwesomeIcon);
+	dom.watch();
+	nuxtApp.vueApp.component('FontAwesomeIcon', FontAwesomeIcon);
 });
 
 // Modify the `nuxt.config.ts` file by adding to the `export default defineNuxtConfig()`
