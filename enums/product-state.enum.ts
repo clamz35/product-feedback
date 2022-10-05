@@ -1,0 +1,5 @@
+export enum PRODUCT_STATE_ENUM {
+  PLANNED,
+  IN_PROGRESS,
+  LIVE,
+}
