@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-secondary-400 h-full py-24">
+	<div class="bg-secondary-400 h-full py-24 flex flex-col items-center">
 		<NuxtPage />
 	</div>
 </template>

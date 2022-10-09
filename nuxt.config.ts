@@ -1,11 +1,19 @@
+import { defineNuxtConfig } from 'nuxt/config';
+
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-	modules: ['@nuxtjs/tailwindcss'],
+	modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt'],
 	rootDir: 'src/',
-	ssr: false,
 	telemetry: false,
+	ssr: true,
 	components: {
-		dirs: ['~/components', '~/features/home', '~/enums', '~/constants'],
+		dirs: [
+			'~/components',
+			'~/features/home',
+			'~/features/feedback',
+			'~/enums',
+			'~/constants',
+		],
 	},
 	tailwindcss: {
 		exposeConfig: true,
@@ -24,7 +32,6 @@ export default defineNuxtConfig({
 	typescript: {
 		strict: true,
 	},
-
 	build: {
 		transpile: [
 			'@fortawesome/vue-fontawesome',

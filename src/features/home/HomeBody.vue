@@ -7,7 +7,7 @@
 			<UiIcon icon="fa-brand fa-lightbulb" class="text-white" />
 			<span class="font-bold text-white">6 suggestions</span>
 			<UiVoteSortMenu class="flex-1"></UiVoteSortMenu>
-			<UiButton class="justify-self-end">+ Add Feedback</UiButton>
+			<AddFeedbackBtn class="justify-self-end"></AddFeedbackBtn>
 		</UiCard>
 		<FeedbackList></FeedbackList>
 	</div>

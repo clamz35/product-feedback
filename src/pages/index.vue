@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="max-w-[1100px] m-auto flex flex-col gap-7 lg:grid lg:grid-cols-suggestion"
+		class="max-w-[1100px] flex flex-col gap-7 lg:grid lg:grid-cols-suggestion"
 	>
 		<HomeSidebar class="flex flex-col gap-6"></HomeSidebar>
 		<HomeBody></HomeBody>
@@ -14,4 +14,12 @@
 <script lang="ts" setup>
 import HomeBody from '~~/features/home/HomeBody.vue';
 import HomeSidebar from '~~/features/home/HomeSidebar.vue';
+
+// Categories
+const { fetchCategories } = useCategory();
+fetchCategories();
+
+//  Feedbacks
+const { fetchFeedbacks } = useFeedback();
+fetchFeedbacks();
 </script>

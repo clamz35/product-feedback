@@ -2,7 +2,7 @@
 	<span class="flex flex-col gap-1">
 		<component
 			:is="props.component"
-			class="rounded bg-secondary-400 py-3 px-6 text-s focus-visible:outline-accent-secondary-500"
+			class="rounded bg-secondary-400 py-3 px-6 text-s focus-visible:outline-accent-secondary-500 resize-none"
 			:class="{
 				'outline-error-500 outline-2 outline': !!props.errorMessage,
 			}"

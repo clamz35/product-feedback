@@ -18,6 +18,7 @@
 		</OverlayMenu>
 	</div>
 </template>
+
 <script lang="ts" setup>
 import OverlayMenu from '../OverlayMenu.vue';
 import OverlayMenuItem from '../OverlayMenuItem.vue';
@@ -29,7 +30,9 @@ const myComp = resolveComponent('ui/form/DropdownInput');
 
 const isOpen = ref(false);
 
-const toggleOpen = () => (isOpen.value = !isOpen.value);
+const toggleOpen = (): void => {
+	isOpen.value = !isOpen.value;
+};
 </script>
 
 <style lang="scss" scoped>
