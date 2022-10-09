@@ -25,7 +25,7 @@ const emit = defineEmits<{
 	(e: 'select', voteSort: VOTE_SORT): void;
 }>();
 
-const onClick = () => {
+const onClick = (): void => {
 	emit('select', props.voteSort);
 };
 </script>

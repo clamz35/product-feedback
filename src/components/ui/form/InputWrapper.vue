@@ -1,11 +1,14 @@
 <template>
 	<span class="flex flex-col gap-1">
 		<component
-			:is="props.component"
-			class="rounded bg-secondary-400 py-3 px-6 text-s focus-visible:outline-accent-secondary-500 resize-none"
+			:is="comp"
+			class="rounded bg-secondary-400 py-3 px-6 text-s min-w-[200px] min-h-[46px] focus-visible:outline-accent-secondary-500 resize-none"
 			:class="{
 				'outline-error-500 outline-2 outline': !!props.errorMessage,
 			}"
+			:context="props"
+			:options="options"
+			v-model="value"
 		></component>
 		<span
 			class="transition-opacity text-error-500"
@@ -20,8 +23,48 @@
 </template>
 
 <script lang="ts" setup>
+import { ConcreteComponent } from 'vue';
+import { FieldOptions } from '~~/models/field-options.model';
+
+type ComponentsMap = Record<
+	string,
+	{
+		component: string;
+	}
+>;
+
 const props = defineProps<{
-	component: unknown;
+	component: string;
+	options?: FieldOptions<unknown>[];
 	errorMessage?: string;
+	modelValue?: unknown;
 }>();
+
+const components: ComponentsMap = {
+	text: {
+		component: 'InputTextField',
+	},
+	dropdown: {
+		component: 'Dropdown',
+	},
+	textarea: {
+		component: 'Textarea',
+	},
+};
+
+const emit = defineEmits(['update:modelValue']);
+
+const value = computed({
+	get() {
+		return props.modelValue;
+	},
+	set(value) {
+		emit('update:modelValue', value);
+	},
+});
+
+let comp: string | ConcreteComponent | null = null;
+if (components[props.component]) {
+	comp = resolveComponent(components[props.component].component);
+}
 </script>

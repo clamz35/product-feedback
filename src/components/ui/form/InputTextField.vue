@@ -1,8 +1,8 @@
 <template>
-	<textarea class="textarea" v-model="value"></textarea>
+	<input type="text" v-model="value" />
 </template>
 <script lang="ts" setup>
-const props = defineProps<{ modelValue: string }>();
+const props = defineProps<{ errorMessage?: string; modelValue: string }>();
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -16,9 +16,8 @@ const value = computed({
 });
 </script>
 
-<style scoped lang="scss">
-.textarea {
-	resize: none;
-	min-height: 6.25rem;
+<style lang="scss" scoped>
+.input {
+	background: none;
 }
 </style>

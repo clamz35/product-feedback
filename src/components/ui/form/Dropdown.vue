@@ -1,37 +1,61 @@
 <template>
 	<div class="relative">
-		<InputWrapper
-			class="cursor-pointer"
-			:component="myComp"
-			:errorMessage="props.errorMessage"
-			@click="toggleOpen()"
-		></InputWrapper>
-		<OverlayMenu
+		<div class="cursor-pointer" v-bind="$attrs" @click="toggleOpen()">
+			{{ value }}
+		</div>
+		<UiOverlayMenu
 			v-if="isOpen"
 			@click="toggleOpen()"
 			class="absolute top-0 z-10"
 		>
-			<OverlayMenuItem>
-				<SelectableItem>Feature</SelectableItem>
-			</OverlayMenuItem>
-			<OverlayMenuItem><SelectableItem>UX</SelectableItem></OverlayMenuItem>
-		</OverlayMenu>
+			<UiOverlayMenuItem v-for="option in options">
+				<UiSelectableItem
+					@click="select(option)"
+					:isActive="value === option.label"
+					>{{ option.label }}</UiSelectableItem
+				>
+			</UiOverlayMenuItem>
+		</UiOverlayMenu>
 	</div>
 </template>
 
-<script lang="ts" setup>
-import OverlayMenu from '../OverlayMenu.vue';
-import OverlayMenuItem from '../OverlayMenuItem.vue';
-import SelectableItem from '../SelectableItem.vue';
-import InputWrapper from './InputWrapper.vue';
+<script lang="ts">
+export default {
+	inheritAttrs: false, // to permit to do v-bind="$attrs" in template
+};
+</script>
 
-const props = defineProps<{ errorMessage?: string }>();
-const myComp = resolveComponent('ui/form/DropdownInput');
+<script lang="ts" setup>
+import { FieldOptions } from '~~/models/field-options.model';
+
+interface DropdownProps {
+	modelValue: unknown;
+	errorMessage?: string;
+	options?: Array<FieldOptions<unknown>>;
+}
+
+const props = withDefaults(defineProps<DropdownProps>(), { options: () => [] });
+
+const emit = defineEmits(['update:modelValue']);
 
 const isOpen = ref(false);
 
 const toggleOpen = (): void => {
 	isOpen.value = !isOpen.value;
+};
+
+const value = computed({
+	get() {
+		return props.options.find((option) => option.value === props.modelValue)
+			?.label;
+	},
+	set(value: unknown) {
+		emit('update:modelValue', value);
+	},
+});
+
+const select = (option: FieldOptions<unknown>): void => {
+	value.value = option.value;
 };
 </script>
 

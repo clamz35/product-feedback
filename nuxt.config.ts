@@ -8,6 +8,10 @@ export default defineNuxtConfig({
 	ssr: true,
 	components: {
 		dirs: [
+			{
+				path: '~/components/ui/form',
+				global: true,
+			},
 			'~/components',
 			'~/features/home',
 			'~/features/feedback',

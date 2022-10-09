@@ -7,3 +7,9 @@
 		<FeedbackCreateForm />
 	</div>
 </template>
+
+<script setup lang="ts">
+// Categories
+const { fetchCategories } = useCategory();
+fetchCategories();
+</script>

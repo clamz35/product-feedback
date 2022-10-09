@@ -24,7 +24,7 @@ const props = withDefaults(
 
 let nbVotes = ref(props.initialNbVotes);
 
-const addVote = () => {
+const addVote = (): void => {
 	nbVotes.value = nbVotes.value + 1;
 };
 </script>

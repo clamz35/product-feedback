@@ -1,5 +1,5 @@
 <template>
-	<div class="max-w-7xl mx-auto my-72">
+	<UiCard class="max-w-7xl mx-auto my-10 py-14">
 		<NuxtLink to="/">Home page</NuxtLink>
 		<h1>Design System</h1>
 
@@ -148,21 +148,56 @@
 			<h2 class="h2 text-[48px] mb-10 mt-20">Form elements</h2>
 
 			<div class="flex gap-10">
-				<InputText />
-				<InputText error-message="Has error" />
+				<InputWrapper
+					component="text"
+					title="Feedback Title"
+					v-model="inputValue"
+				></InputWrapper>
+				<InputWrapper
+					component="text"
+					title="Feedback Title"
+					error-message="Has error"
+					v-model="inputValue"
+				></InputWrapper>
 			</div>
 			<div class="flex gap-10">
-				<Dropdown />
+				<InputWrapper
+					component="dropdown"
+					v-model="dropdown1Value"
+					title="Feedback Title"
+					:options="options"
+				></InputWrapper>
+				<InputWrapper
+					component="dropdown"
+					title="Feedback Title"
+					v-model="dropdown2Value"
+					error-message="Has error"
+					:options="options"
+				></InputWrapper>
 			</div>
 		</div>
-	</div>
+	</UiCard>
 </template>
 
 <script setup lang="ts">
+import { Ref } from 'vue';
 import Button from '~~/components/ui/Button.vue';
-import Dropdown from '~~/components/ui/form/Dropdown.vue';
-import InputText from '~~/components/ui/form/InputText.vue';
 import Tag from '~~/components/ui/Tag.vue';
 import Upvote from '~~/components/ui/Upvote.vue';
 import VoteSortMenu from '~~/components/ui/VoteSortMenu.vue';
+import { FieldOptions } from '~~/models/field-options.model';
+
+const inputValue = '';
+const options: FieldOptions<string>[] = [
+	{
+		label: 'UX',
+		value: 'UX',
+	},
+	{
+		label: 'UI',
+		value: 'UI',
+	},
+];
+const dropdown1Value: Ref<string> = ref('UI');
+const dropdown2Value: Ref<string> = ref('UX');
 </script>

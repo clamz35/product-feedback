@@ -56,7 +56,7 @@ let sortBy: Ref<VOTE_SORT> = ref(VOTE_SORT.MOST_UPVOTES);
 
 let menuIsOpen = ref(false);
 
-const toggleMenu = () => {
+const toggleMenu = (): void => {
 	menuIsOpen.value = !menuIsOpen.value;
 };
 

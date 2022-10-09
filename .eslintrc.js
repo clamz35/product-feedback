@@ -15,6 +15,16 @@ module.exports = {
 		sourceType: 'module',
 	},
 	plugins: ['vue', '@typescript-eslint'],
+
+	overrides: [
+		{
+			files: ['*.ts', '*.vue'],
+			rules: {
+				'@typescript-eslint/explicit-function-return-type': 'error',
+			},
+		},
+	],
+
 	rules: {
 		'no-unused-expressions': 'off',
 		'vue/no-v-html': 'off',
@@ -31,6 +41,5 @@ module.exports = {
 		'no-return-await': ['error'],
 		'no-template-curly-in-string': ['warn'],
 		'prefer-template': ['warn'],
-		'@typescript-eslint/explicit-function-return-type': 'error',
 	},
 };

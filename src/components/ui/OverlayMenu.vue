@@ -1,5 +1,5 @@
 <template>
-	<ul class="overlay-menu rounded shadow-xl bg-white w-[255px]">
+	<ul class="overlay-menu rounded shadow-xl bg-white w-full min-w-[255px]">
 		<slot></slot>
 	</ul>
 </template>
