@@ -1,9 +1,6 @@
 <template>
-	<div class="max-w-[540px]">
-		<NuxtLink to="/" class="flex items-center">
-			<UiIcon icon="fa-brand fa-chevron-left" class="mr-4 mt-[3px]"></UiIcon>
-			<span class="font-bold text-xs">Go Back</span>
-		</NuxtLink>
+	<div class="max-w-[540px] flex flex-col gap-16">
+		<GoBackButton />
 		<FeedbackCreateForm />
 	</div>
 </template>

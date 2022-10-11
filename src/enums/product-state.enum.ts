@@ -1,5 +1,5 @@
 export enum PRODUCT_STATE_ENUM {
-	PLANNED,
-	IN_PROGRESS,
-	LIVE,
+	PLANNED = 'planned',
+	IN_PROGRESS = 'in-progress',
+	LIVE = 'live',
 }

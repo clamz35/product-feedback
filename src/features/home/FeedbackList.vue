@@ -1,18 +1,14 @@
 <template>
 	<div v-if="feedbacks">
 		<div v-if="feedbacks.length > 0">
-			<UiCard
+			<NuxtLink
 				v-for="feedback in feedbacks"
-				class="flex gap-10 items-start my-6"
+				:key="feedback.id"
+				:to="`/feedback/${feedback.id}`"
 			>
-				<UiUpvote class="flex-grow-0"></UiUpvote>
-				<div class="flex-1">
-					<div class="text-l font-bold">{{ feedback.name }}</div>
-					<div>{{ feedback.detail }}</div>
-					<UiTag class="mt-4 inline-block">{{ feedback.state }}</UiTag>
-				</div>
-				<div class="self-center"><UiIcon icon="fa-brand fa-comment" /> 2</div>
-			</UiCard>
+				<FeedbackCard class="flex gap-10 items-start my-6" :feedback="feedback">
+				</FeedbackCard>
+			</NuxtLink>
 		</div>
 		<FeedbackEmpty v-else />
 	</div>

@@ -1,12 +1,13 @@
 import { Ref } from 'nuxt/dist/app/compat/capi';
 import { storeToRefs } from 'pinia';
 import { Category } from '~~/models/category.model';
-import { Feedback } from '~~/models/feedback.model';
+import { Feedback, FeedbackInterface } from '~~/models/feedback.model';
 import { useFeedbackStore } from '~~/store/feedback.store';
 
 interface UseFeedbackOutput {
 	feedbacks: Ref<Feedback[] | null>;
 	fetchFeedbacks: () => void;
+	createFeedback: (feedback: FeedbackInterface) => void;
 	categorySelected: Ref<Category | null>;
 	selectCategory: (category: Category | null) => void;
 }
@@ -20,6 +21,10 @@ export const useFeedback = (): UseFeedbackOutput => {
 		feedbackStore.fetchFeedbacks();
 	};
 
+	const createFeedback = (feedback: FeedbackInterface): void => {
+		feedbackStore.createFeedback(feedback);
+	};
+
 	const selectCategory = (category: Category | null): void => {
 		feedbackStore.selectCategory(category);
 	};
@@ -27,6 +32,7 @@ export const useFeedback = (): UseFeedbackOutput => {
 	return {
 		feedbacks,
 		fetchFeedbacks,
+		createFeedback,
 		selectCategory,
 		categorySelected,
 	};

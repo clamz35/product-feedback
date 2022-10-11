@@ -38,11 +38,16 @@
 				></InputWrapper>
 			</FeedbackFormGroup>
 		</div>
+
+		<UiButton class="mt-4 flex justify-end" @click="submit()"
+			>Add Feedback</UiButton
+		>
 	</UiCard>
 </template>
 
 <script setup lang="ts">
 import { Ref } from 'vue';
+import { PRODUCT_STATE_ENUM } from '~~/enums/product-state.enum';
 import { Category } from '~~/models/category.model';
 import { FieldOptions } from '~~/models/field-options.model';
 
@@ -77,4 +82,16 @@ const categoriesOptions = computed((): FieldOptions<Category | null>[] => {
 		...categoriesOptions,
 	];
 });
+
+// feed back
+
+const { createFeedback } = useFeedback();
+const submit = (): void => {
+	createFeedback({
+		name: form.value.title,
+		detail: form.value.detail,
+		state: PRODUCT_STATE_ENUM.IN_PROGRESS,
+		category: form.value.category?.id,
+	});
+};
 </script>

@@ -1,8 +1,8 @@
-import { _AsyncData } from 'nuxt/dist/app/composables/asyncData';
+import { AsyncData, _AsyncData } from 'nuxt/dist/app/composables/asyncData';
 import { defineStore } from 'pinia';
 import { PRODUCT_STATE_ENUM } from '~~/enums/product-state.enum';
 import { Category } from '~~/models/category.model';
-import { Feedback } from '~~/models/feedback.model';
+import { Feedback, FeedbackInterface } from '~~/models/feedback.model';
 import { StrapiResponse } from '~~/models/strapi-response.model';
 
 interface FeedbackState {
@@ -45,6 +45,15 @@ export const useFeedbackStore = defineStore({
 						state: feedbackApi.attributes.state as PRODUCT_STATE_ENUM,
 					});
 				});
+			});
+		},
+
+		async createFeedback(
+			feedback: FeedbackInterface,
+		): Promise<AsyncData<Category, true | Error | null>> {
+			return useHttp<Category>('create-feedback', '/api/feedbacks', {
+				method: 'POST',
+				body: { data: { ...feedback } },
 			});
 		},
 
