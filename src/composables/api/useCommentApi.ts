@@ -1,5 +1,3 @@
-import { _AsyncData } from 'nuxt/dist/app/composables/asyncData';
-import { v4 as uuidv4 } from 'uuid';
 import { AccountInterface } from '~~/models/account.model';
 import { CommentApiInterface } from '~~/models/api/comment-api.model';
 import {
@@ -14,21 +12,15 @@ interface UseCommentsAPiOutput {
 
 export const useCommentApi = (): UseCommentsAPiOutput => {
 	const addComment = (comment: CommentInterface): Promise<CommentInterface> => {
-		return useHttp<StrapiResponse<CommentApiInterface>>(
-			uuidv4(),
-			'/api/comments',
-			{
-				method: 'POST',
-				body: { data: comment },
-			},
-		).then(
-			(
-				commentsApi: _AsyncData<StrapiResponse<CommentApiInterface>, unknown>,
-			): CommentInterface => {
-				const comment = commentsApi.data.value
-					?.data as StrapiData<CommentApiInterface>;
+		return useHttp<StrapiResponse<CommentApiInterface>>('/api/comments', {
+			method: 'POST',
+			body: { data: comment },
+		}).then(
+			(commentsApi: StrapiResponse<CommentApiInterface>): CommentInterface => {
+				const comment = commentsApi.data as StrapiData<CommentApiInterface>;
 				const message = comment?.attributes.message;
 				const account = comment.attributes.account;
+
 				return {
 					id: comment.id,
 					message,

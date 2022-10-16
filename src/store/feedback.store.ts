@@ -1,6 +1,4 @@
-import { AsyncData, _AsyncData } from 'nuxt/dist/app/composables/asyncData';
 import { defineStore } from 'pinia';
-import { v4 as uuidv4 } from 'uuid';
 import { AccoutApiInterface } from '~~/models/api/account-api.model';
 import { CommentApiInterface } from '~~/models/api/comment-api.model';
 import { FeedbackApiInterface } from '~~/models/api/feedback-api.model';
@@ -32,29 +30,25 @@ export const useFeedbackStore = defineStore({
 	getters: {},
 	actions: {
 		async fetchFeedbacks(): Promise<void> {
-			let endpointCacheKey = 'feedbacks';
 			const params: Record<string, unknown> = {};
 			params.populate = 'comments.account, category';
 
 			if (this.categorySelected) {
 				params[`filters[category][id]`] = this.categorySelected.id;
-				endpointCacheKey = `filters[category][id]-${this.categorySelected.id}`;
 			}
 			this.feedbacks = await useHttp<FeedbacksEndpointResponse>(
-				endpointCacheKey,
-
 				'/api/feedbacks',
 				{
 					params,
 				},
-			).then((val: _AsyncData<FeedbacksEndpointResponse, unknown>) => {
-				if (!val.data.value) {
+			).then((val: FeedbacksEndpointResponse) => {
+				if (!val?.data) {
 					throw Error('[API][ERROR]Feedback response is empty');
 				}
-				if (!isStrapiDataArray(val.data.value.data)) {
+				if (!isStrapiDataArray(val.data)) {
 					return null;
 				}
-				return val.data.value?.data.map((feedbackApi): Feedback => {
+				return val?.data.map((feedbackApi): Feedback => {
 					return convertFeedbackApiToFeedback(feedbackApi);
 				});
 			});
@@ -64,27 +58,21 @@ export const useFeedbackStore = defineStore({
 			const params: Record<string, unknown> = {};
 			params.populate = 'comments.account, category';
 			this.feedback = await useHttp<StrapiResponse<FeedbackApiInterface>>(
-				`feedback-${id}`,
 				`/api/feedbacks/${id}`,
 				{ params },
-			).then(
-				(
-					response: _AsyncData<StrapiResponse<FeedbackApiInterface>, unknown>,
-				) => {
-					if (!response.data.value) {
-						throw Error('[API][ERROR]Feedback response is empty');
-					}
-					const feedbackData = response.data.value
-						.data as StrapiData<FeedbackApiInterface>;
-					return convertFeedbackApiToFeedback(feedbackData);
-				},
-			);
+			).then((response: StrapiResponse<FeedbackApiInterface>) => {
+				if (!response) {
+					throw Error('[API][ERROR]Feedback response is empty');
+				}
+				const feedbackData = response.data as StrapiData<FeedbackApiInterface>;
+				return convertFeedbackApiToFeedback(feedbackData);
+			});
 		},
 
 		async createFeedback(
 			feedback: FeedbackInterface,
-		): Promise<AsyncData<FeedbackInterface, true | Error | null>> {
-			return useHttp<FeedbackInterface>('create-feedback', '/api/feedbacks', {
+		): Promise<StrapiData<FeedbackApiInterface>> {
+			return useHttp<StrapiData<FeedbackApiInterface>>('/api/feedbacks', {
 				method: 'POST',
 				body: { data: { ...feedback } },
 			});
@@ -92,12 +80,9 @@ export const useFeedbackStore = defineStore({
 
 		async updateFeedback(
 			feedback: FeedbackRequestInterface,
-		): Promise<
-			AsyncData<StrapiResponse<FeedbackApiInterface>, true | Error | null>
-		> {
+		): Promise<StrapiResponse<FeedbackApiInterface>> {
 			const params: Record<string, unknown> = {};
 			return useHttp<StrapiResponse<FeedbackApiInterface>>(
-				uuidv4(),
 				`/api/feedbacks/${feedback.id}`,
 				{
 					method: 'PUT',

@@ -1,4 +1,3 @@
-import { _AsyncData } from 'nuxt/dist/app/composables/asyncData';
 import { defineStore } from 'pinia';
 import {
 	StrapiData,
@@ -16,30 +15,21 @@ export const useCategoriesStore = defineStore({
 	actions: {
 		async fetchCategories() {
 			this.categories = await useHttp<StrapiResponse<Category>>(
-				'categories',
 				'/api/categories',
-			).then(
-				(
-					value: _AsyncData<StrapiResponse<Category>, unknown>,
-				): Category[] | null => {
-					const response = value.data.value;
+			).then((response: StrapiResponse<Category>): Category[] | null => {
+				if (!response) {
+					throw Error('[API][ERROR] Categories: response is empty');
+				}
 
-					if (!response) {
-						throw Error('[API][ERROR] Categories: response is empty');
-					}
+				if (!Array.isArray(response.data)) return null;
 
-					if (!Array.isArray(response.data)) return null;
-
-					return response.data.map(
-						(response: StrapiData<Category>): Category => {
-							return new Category({
-								id: response.id,
-								name: response.attributes.name as string,
-							});
-						},
-					);
-				},
-			);
+				return response.data.map((response: StrapiData<Category>): Category => {
+					return new Category({
+						id: response.id,
+						name: response.attributes.name as string,
+					});
+				});
+			});
 		},
 		setCategories(categories: Category[]) {
 			this.categories = categories;

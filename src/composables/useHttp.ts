@@ -1,24 +1,6 @@
-import { AsyncData } from 'nuxt/dist/app/composables';
-import {
-	KeyOfRes,
-	PickFrom,
-	_Transform,
-} from 'nuxt/dist/app/composables/asyncData';
-import type { FetchOptions } from 'ohmyfetch';
+import { FetchOptions } from 'ohmyfetch';
 
-export const useHttp = <T>(
-	key: string | null,
-	url: string,
-	opts?: FetchOptions,
-): AsyncData<PickFrom<T, KeyOfRes<_Transform<T, T>>>, true | Error | null> => {
+export const useHttp = <T>(url: string, opts?: FetchOptions): Promise<T> => {
 	const { $http } = useNuxtApp();
-	// if you want, you can also make this
-	// support selector strings as target
-	let request = null;
-	if (!key) {
-		request = useAsyncData<T>(() => $http(url, opts));
-	} else {
-		request = useAsyncData<T>(key, () => $http(url, opts));
-	}
-	return request;
+	return $http<T>(url, opts);
 };
