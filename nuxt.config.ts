@@ -5,7 +5,7 @@ export default defineNuxtConfig({
 	modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt'],
 	rootDir: 'src/',
 	telemetry: false,
-	ssr: true,
+	ssr: false,
 	components: {
 		dirs: [
 			{

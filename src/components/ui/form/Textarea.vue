@@ -1,8 +1,19 @@
 <template>
-	<textarea class="textarea" v-model="value"></textarea>
+	<textarea
+		class="textarea"
+		v-model="value"
+		:disabled="disabled"
+		:maxlength="maxlength"
+		:placeholder="placeholder"
+	></textarea>
 </template>
 <script lang="ts" setup>
-const props = defineProps<{ modelValue: string }>();
+const props = defineProps<{
+	modelValue: string;
+	disabled?: boolean;
+	maxlength?: number;
+	placeholder?: string;
+}>();
 
 const emit = defineEmits(['update:modelValue']);
 

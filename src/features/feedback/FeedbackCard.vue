@@ -6,7 +6,9 @@
 			<div>{{ feedback.detail }}</div>
 			<UiTag class="mt-4 inline-block">{{ feedback.state }}</UiTag>
 		</div>
-		<div class="self-center"><UiIcon icon="fa-brand fa-comment" /> 2</div>
+		<div class="self-center">
+			<UiIcon icon="fa-brand fa-comment" />{{ getNbComments(feedback) }}
+		</div>
 	</UiCard>
 </template>
 
@@ -14,4 +16,6 @@
 import { FeedbackInterface } from '~~/models/feedback.model';
 
 defineProps<{ feedback: FeedbackInterface }>();
+
+const { getNbComments } = useFeedback();
 </script>

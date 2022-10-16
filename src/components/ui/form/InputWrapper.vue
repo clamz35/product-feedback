@@ -8,6 +8,9 @@
 			}"
 			:context="props"
 			:options="options"
+			:disabled="disabled"
+			:maxlength="maxlength"
+			:placeholder="placeholder"
 			v-model="value"
 		></component>
 		<span
@@ -36,7 +39,10 @@ type ComponentsMap = Record<
 const props = defineProps<{
 	component: string;
 	options?: FieldOptions<unknown>[];
+	disabled?: boolean;
 	errorMessage?: string;
+	maxlength?: number;
+	placeholder?: string;
 	modelValue?: unknown;
 }>();
 
