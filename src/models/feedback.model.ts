@@ -1,5 +1,5 @@
 import { PRODUCT_STATE_ENUM } from '~~/enums/product-state.enum';
-import { Category } from './category.model';
+import { Category, CategoryInterface } from './category.model';
 import { CommentInterface } from './comment.model';
 
 export interface FeedbackInterface {
@@ -7,7 +7,7 @@ export interface FeedbackInterface {
 	name: string;
 	detail: string;
 	state: PRODUCT_STATE_ENUM;
-	category?: number;
+	category?: CategoryInterface;
 	comments?: CommentInterface[];
 }
 
@@ -16,7 +16,7 @@ export class Feedback implements FeedbackInterface {
 	name!: string;
 	detail!: string;
 	state!: PRODUCT_STATE_ENUM;
-	category?: number;
+	category?: CategoryInterface;
 	comments?: CommentInterface[];
 	constructor({
 		id,

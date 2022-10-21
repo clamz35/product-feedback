@@ -13,11 +13,18 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps<{
-	maxlength: number;
-	modelValue?: unknown;
-	disabled?: boolean;
-}>();
+const props = withDefaults(
+	defineProps<{
+		labelIsDisplay?: boolean;
+		maxlength?: number;
+		modelValue?: unknown;
+		disabled?: boolean;
+	}>(),
+	{
+		labelIsDisplay: true,
+		disabled: false,
+	},
+);
 const emit = defineEmits(['update:modelValue']);
 
 const value = computed({

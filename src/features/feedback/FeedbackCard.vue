@@ -6,7 +6,7 @@
 			<div>{{ feedback.detail }}</div>
 			<UiTag class="mt-4 inline-block">{{ feedback.state }}</UiTag>
 		</div>
-		<div class="self-center">
+		<div class="self-center flex gap-2">
 			<UiIcon icon="fa-brand fa-comment" />{{ getNbComments(feedback) }}
 		</div>
 	</UiCard>

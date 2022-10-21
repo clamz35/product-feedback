@@ -1,24 +1,21 @@
 import { defineStore } from 'pinia';
-import { AccoutApiInterface } from '~~/models/api/account-api.model';
-import { CommentApiInterface } from '~~/models/api/comment-api.model';
+import { useCommentApi } from '~~/composables/api/useCommentApi';
+import { useFeedbackApi } from '~~/composables/api/useFeedbackApi';
+import { commentApiConverter } from '~~/converters/comment.converter';
 import { FeedbackApiInterface } from '~~/models/api/feedback-api.model';
 import {
 	StrapiData,
 	StrapiResponse,
 } from '~~/models/api/strapi-response.model';
-import { Category } from '~~/models/category.model';
+import { CategoryInterface } from '~~/models/category.model';
 import { CommentInterface } from '~~/models/comment.model';
-import { Feedback, FeedbackInterface } from '~~/models/feedback.model';
-import { FeedbackRequestInterface } from '~~/models/request/feedback-request.model';
-import { isStrapiDataArray } from '~~/utils/strapi.utils';
+import { FeedbackInterface } from '~~/models/feedback.model';
 
 interface FeedbackState {
-	feedbacks: Feedback[] | null;
-	feedback: Feedback | null;
-	categorySelected: Category | null;
+	feedbacks: FeedbackInterface[] | null;
+	feedback: FeedbackInterface | null;
+	categorySelected: CategoryInterface | null;
 }
-
-type FeedbacksEndpointResponse = StrapiResponse<FeedbackApiInterface>;
 
 export const useFeedbackStore = defineStore({
 	id: 'feedbacks-store',
@@ -30,115 +27,69 @@ export const useFeedbackStore = defineStore({
 	getters: {},
 	actions: {
 		async fetchFeedbacks(): Promise<void> {
-			const params: Record<string, unknown> = {};
-			params.populate = 'comments.account, category';
-
-			if (this.categorySelected) {
-				params[`filters[category][id]`] = this.categorySelected.id;
-			}
-			this.feedbacks = await useHttp<FeedbacksEndpointResponse>(
-				'/api/feedbacks',
-				{
-					params,
-				},
-			).then((val: FeedbacksEndpointResponse) => {
-				if (!val?.data) {
-					throw Error('[API][ERROR]Feedback response is empty');
-				}
-				if (!isStrapiDataArray(val.data)) {
-					return null;
-				}
-				return val?.data.map((feedbackApi): Feedback => {
-					return convertFeedbackApiToFeedback(feedbackApi);
-				});
-			});
+			this.feedbacks = await useFeedbackApi().fetchFeedbacks(
+				this.categorySelected,
+			);
 		},
 
 		async fetchFeedback(id: number): Promise<void> {
-			const params: Record<string, unknown> = {};
-			params.populate = 'comments.account, category';
-			this.feedback = await useHttp<StrapiResponse<FeedbackApiInterface>>(
-				`/api/feedbacks/${id}`,
-				{ params },
-			).then((response: StrapiResponse<FeedbackApiInterface>) => {
-				if (!response) {
-					throw Error('[API][ERROR]Feedback response is empty');
-				}
-				const feedbackData = response.data as StrapiData<FeedbackApiInterface>;
-				return convertFeedbackApiToFeedback(feedbackData);
-			});
+			this.feedback = await useFeedbackApi().fetchFeedback(id);
 		},
 
 		async createFeedback(
 			feedback: FeedbackInterface,
 		): Promise<StrapiData<FeedbackApiInterface>> {
-			return useHttp<StrapiData<FeedbackApiInterface>>('/api/feedbacks', {
-				method: 'POST',
-				body: { data: { ...feedback } },
-			});
+			return useFeedbackApi().createFeedback(feedback);
 		},
 
 		async updateFeedback(
-			feedback: FeedbackRequestInterface,
+			feedback: FeedbackInterface,
 		): Promise<StrapiResponse<FeedbackApiInterface>> {
-			const params: Record<string, unknown> = {};
-			return useHttp<StrapiResponse<FeedbackApiInterface>>(
-				`/api/feedbacks/${feedback.id}`,
-				{
-					method: 'PUT',
-					params,
-					body: { data: { ...feedback } },
-				},
-			);
+			return useFeedbackApi().updateFeedback(feedback);
 		},
 
-		selectCategory(category: Category | null) {
+		selectCategory(category: CategoryInterface | null) {
 			this.categorySelected = category;
 
 			this.fetchFeedbacks();
 		},
 
-		addComment(comment: CommentInterface) {
-			if (!this.feedback) {
+		async addComment(comment: CommentInterface) {
+			if (!this.feedback?.id) {
 				throw Error('[ERROR] this.feedback is undefined');
 			}
+			const { addComment: addCommentApi } = useCommentApi();
+
+			await addCommentApi(
+				commentApiConverter.toRequestModel(comment, {
+					feedbackId: this.feedback.id,
+				}),
+			);
 			if (!this.feedback.comments) {
 				this.feedback.comments = [];
 			}
 			this.feedback?.comments?.push(comment);
 		},
+
+		async addReply(
+			parentComment: CommentInterface,
+			newComment: CommentInterface,
+		) {
+			if (!parentComment?.id) {
+				throw Error('[ERROR] parentComment?.id is undefined');
+			}
+			const { addComment: addCommentApi } = useCommentApi();
+
+			await addCommentApi(
+				commentApiConverter.toRequestModel(newComment, {
+					parentCommentId: parentComment.id,
+				}),
+			);
+
+			if (!parentComment.comments) {
+				parentComment.comments = [];
+			}
+			parentComment.comments?.push(newComment);
+		},
 	},
 });
-const convertFeedbackApiToFeedback = (
-	feedbackApi: StrapiData<FeedbackApiInterface>,
-): Feedback => {
-	const commentsApi = feedbackApi.attributes.comments;
-
-	const commentsData = commentsApi?.data as
-		| StrapiData<CommentApiInterface>[]
-		| undefined;
-
-	return new Feedback({
-		id: feedbackApi.id,
-		detail: feedbackApi.attributes.detail,
-		name: feedbackApi.attributes.name,
-		state: feedbackApi.attributes.state,
-		comments:
-			commentsData &&
-			commentsData.map((comment): CommentInterface => {
-				const account = comment.attributes.account;
-				let accountData: StrapiData<AccoutApiInterface> | null = null;
-				if (account) {
-					accountData = account.data as StrapiData<AccoutApiInterface>;
-				}
-				return {
-					id: comment.id,
-					message: comment.attributes.message as string,
-					account: accountData && {
-						id: accountData.id,
-						...accountData.attributes,
-					},
-				};
-			}),
-	});
-};

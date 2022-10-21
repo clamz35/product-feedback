@@ -17,9 +17,10 @@ import HomeSidebar from '~~/features/home/HomeSidebar.vue';
 
 // Categories
 const { fetchCategories } = useCategory();
-fetchCategories();
+onMounted(() => fetchCategories());
 
 //  Feedbacks
 const { fetchFeedbacks } = useFeedback();
-fetchFeedbacks();
+
+onMounted(() => fetchFeedbacks());
 </script>

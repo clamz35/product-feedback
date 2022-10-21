@@ -1,24 +1,21 @@
 <template>
-	<div>
-		<button
-			type="button"
-			class="rounded py-4 px-10 text-white transition-all leading-none"
-			:class="{
-				'bg-accent-primary-500 hover:bg-accent-primary-400': isPrimary,
-				'bg-accent-secondary-500 hover:bg-accent-secondary-400': isSecondary,
-				'bg-primary-600': isThird || isLinkButton,
-				'hover:bg-primary-400': isThird,
-				'bg-error-500 hover:bg-error-400': isError,
-				'text-primary-500': isLink,
-				'hover:underline': isLink || isLinkButton,
-			}"
-		>
-			<span v-if="icon" class="mr-4">
-				<Icon icon="fa-brand fa-chevron-left" />
-			</span>
-			<slot />
-		</button>
-	</div>
+	<button
+		class="rounded py-4 px-10 text-white transition-all leading-none"
+		:class="{
+			'bg-accent-primary-500 hover:bg-accent-primary-400': isPrimary,
+			'bg-accent-secondary-500 hover:bg-accent-secondary-400': isSecondary,
+			'bg-primary-600': isThird || isLinkButton,
+			'hover:bg-primary-400': isThird,
+			'bg-error-500 hover:bg-error-400': isError,
+			'text-primary-500': isLink,
+			'hover:underline': isLink || isLinkButton,
+		}"
+	>
+		<span v-if="icon" class="mr-4">
+			<Icon icon="fa-brand fa-chevron-left" />
+		</span>
+		<slot />
+	</button>
 </template>
 
 <script lang="ts" setup>

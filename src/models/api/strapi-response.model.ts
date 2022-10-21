@@ -1,5 +1,9 @@
 export interface StrapiResponse<T> {
-	data: StrapiData<T> | StrapiData<T>[];
+	data: StrapiData<T>;
+}
+
+export interface StrapiCollectionResponse<T> {
+	data: StrapiData<T>[];
 }
 
 export interface StrapiData<T> {
