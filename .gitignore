@@ -9,3 +9,5 @@ dist
 .nuxt-storybook
 storybook-static
 .yarn
+.temp
+.cache
