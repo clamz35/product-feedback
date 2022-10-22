@@ -1,0 +1,14 @@
+{
+  "folders": [
+	{
+		"path": "."
+	},
+	{
+		"path": "../product-feedback-api"
+	}
+],
+  "settings": {
+    "nuxt.isNuxtApp": false,
+    "typescript.tsdk": "product-feedback/node_modules/typescript/lib"
+  }
+}

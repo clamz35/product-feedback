@@ -1,0 +1,30 @@
+# version: '3'
+# services:
+#   web-app:
+#     image: build-dev
+#     container_name: web-app
+#     command: 'yarn dev'
+#     ports:
+#       - '3000:3000'
+#       - '24679:24679'
+#     working_dir: '/webapp'
+#     tty: true
+#     volumes:
+#       - './:/webapp/'
+#     environment:
+#       HOST: 0.0.0.0
+#       PORT: 3000
+
+services:
+  app:
+    image: dev
+    build: .
+    ports:
+      - '3000:3000'
+      - '24679:24679'
+    command: 'yarn dev'
+    volumes:
+      - './:/webapp/'
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3000

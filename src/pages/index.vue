@@ -12,15 +12,16 @@
 </template>
 
 <script lang="ts" setup>
-import HomeBody from '~~/features/home/HomeBody.vue';
-import HomeSidebar from '~~/features/home/HomeSidebar.vue';
-
 // Categories
 const { fetchCategories } = useCategory();
-onMounted(() => fetchCategories());
+useAsyncData('categories', () => {
+	return fetchCategories();
+});
 
 //  Feedbacks
 const { fetchFeedbacks } = useFeedback();
 
-onMounted(() => fetchFeedbacks());
+useAsyncData('feedbacks', () => {
+	return fetchFeedbacks();
+});
 </script>

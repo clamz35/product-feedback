@@ -5,7 +5,14 @@ export default defineNuxtConfig({
 	modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt'],
 	rootDir: 'src/',
 	telemetry: false,
-	ssr: true,
+	typescript: {
+		shim: false,
+		strict: true,
+	},
+	nitro: {
+		compressPublicAssets: { brotli: true },
+		publicAssets: [{ maxAge: 10000 }],
+	},
 	components: {
 		dirs: [
 			{
@@ -27,15 +34,13 @@ export default defineNuxtConfig({
 		'@nuxtjs/tailwindcss',
 	],
 	runtimeConfig: {
+		SERVER_BASE_URL: process.env.SERVER_BASE_URL ?? process.env.BASE_URL,
 		public: {
 			API_KEY: process.env.API_KEY,
 			BASE_URL: process.env.BASE_URL,
 		},
 	},
 
-	typescript: {
-		strict: true,
-	},
 	build: {
 		transpile: [
 			'@fortawesome/vue-fontawesome',

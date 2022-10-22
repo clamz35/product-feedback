@@ -12,8 +12,8 @@ interface UseFeedbackOutput {
 	feedbacks: Ref<FeedbackInterface[] | null>;
 	feedback: Ref<FeedbackInterface | null>;
 	categorySelected: Ref<CategoryInterface | null>;
-	fetchFeedback: (id: number) => void;
-	fetchFeedbacks: () => void;
+	fetchFeedback: (id: number) => Promise<void>;
+	fetchFeedbacks: () => Promise<void>;
 	createFeedback: (feedback: FeedbackInterface) => void;
 	updateFeedback: (feedback: FeedbackInterface) => void;
 	addComment: (comment: CommentInterface) => void;
@@ -31,8 +31,8 @@ export const useFeedback = (): UseFeedbackOutput => {
 
 	const { feedbacks, feedback, categorySelected } = storeToRefs(feedbackStore);
 
-	const fetchFeedbacks = async (): Promise<void> => {
-		useAsyncData(() => feedbackStore.fetchFeedbacks());
+	const fetchFeedbacks = (): Promise<void> => {
+		return feedbackStore.fetchFeedbacks();
 	};
 
 	const fetchFeedback = async (id: number): Promise<void> => {

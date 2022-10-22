@@ -4,7 +4,7 @@ import { Category } from '~~/models/category.model';
 import { useCategoriesStore } from '~~/store/categories.store';
 
 interface UseCategoryOuput {
-	fetchCategories: () => void;
+	fetchCategories: () => Promise<void>;
 	categories: Ref<Category[] | null>;
 }
 
@@ -13,8 +13,8 @@ export const useCategory = (): UseCategoryOuput => {
 
 	const { categories } = storeToRefs(categoryStore);
 
-	const fetchCategories = (): void => {
-		categoryStore.fetchCategories();
+	const fetchCategories = (): Promise<void> => {
+		return categoryStore.fetchCategories();
 	};
 
 	return {

@@ -1,0 +1,25 @@
+# services:
+#   nuxt:
+#     build: .
+#     ports:
+#       - '3000:3000'
+#     command: 'yarn build'
+
+#   nginx:
+#     image: nginx:1.23
+#     ports:
+#       - '83:80'
+#     volumes:
+#       - ./nginx:/etc/nginx/conf.d
+#     depends_on:
+#       - nuxt
+services:
+  app:
+    image: prod
+    build: .
+    ports:
+      - '3000:3000'
+    command: 'yarn preview'
+    environment:
+      SERVER_BASE_URL: http://host.docker.internal:1337/
+      BASE_URL: http://localhost:1337/

@@ -187,7 +187,7 @@ import Upvote from '~~/components/ui/Upvote.vue';
 import VoteSortMenu from '~~/components/ui/VoteSortMenu.vue';
 import { FieldOptions } from '~~/models/field-options.model';
 
-const inputValue = '';
+const inputValue = ref('');
 const options: FieldOptions<string>[] = [
 	{
 		label: 'UX',

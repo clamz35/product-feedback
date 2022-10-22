@@ -11,7 +11,5 @@
 const { feedback, fetchFeedback } = useFeedback();
 
 const route = useRoute();
-const router = useRouter();
-console.log(route.params.id);
-fetchFeedback(Number(route.params.id));
+useAsyncData('feedback', () => fetchFeedback(Number(route.params.id)));
 </script>
