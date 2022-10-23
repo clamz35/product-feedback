@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="flex gap-8 items-start">
+		<div class="flex gap-8 items-start mb-8">
 			<img
 				v-if="comment.account"
 				:src="comment.account?.avatarUrl"
@@ -27,13 +27,31 @@
 				<p class="mt-4">{{ comment.message }}</p>
 			</div>
 		</div>
-		<form v-if="formIsDisplay" @submit="submitForm()">
-			<FeedbackCommentInput v-model="newComment"></FeedbackCommentInput>
+		<div
+			v-if="comment.comments"
+			class="pl-8 ml-4 border-l border-solid border-[#6471961A]"
+		>
+			<FeedbackComment
+				v-for="child in comment.comments"
+				:key="child.id"
+				:comment="child"
+			>
+			</FeedbackComment>
+		</div>
+
+		<form
+			v-if="formIsDisplay"
+			@submit="submitForm()"
+			class="flex gap-4 items-start"
+		>
+			<FeedbackCommentInput
+				class="flex-1"
+				v-model="newComment"
+				:labelIsDisplay="false"
+			></FeedbackCommentInput>
 
 			<UiButton type="submit">Post a comment</UiButton>
 		</form>
-		<FeedbackComment v-for="child in comment.comments" :comment="child">
-		</FeedbackComment>
 	</div>
 </template>
 
