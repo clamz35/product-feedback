@@ -8,7 +8,8 @@
 		<CategoriesList></CategoriesList>
 		<UiCard class="flex flex-col gap-6">
 			<div class="flex justify-between">
-				<span class="font-bold text-l">Roadmap</span> <a>View</a>
+				<span class="font-bold text-l">Roadmap</span>
+				<NuxtLink to="/roadmap">View</NuxtLink>
 			</div>
 			<div>
 				<div>

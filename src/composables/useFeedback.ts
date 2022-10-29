@@ -23,6 +23,9 @@ interface UseFeedbackOutput {
 	) => void;
 	selectCategory: (category: CategoryInterface | null) => void;
 	getNbComments: (feedback: FeedbackInterface) => number;
+	getPlannedFeedbacks: () => FeedbackInterface[] | null;
+	getInProgressFeedbacks: () => FeedbackInterface[] | null;
+	getLiveFeedbacks: () => FeedbackInterface[] | null;
 }
 
 export const useFeedback = (): UseFeedbackOutput => {
@@ -67,6 +70,18 @@ export const useFeedback = (): UseFeedbackOutput => {
 		return comment;
 	};
 
+	const getPlannedFeedbacks = (): FeedbackInterface[] | null => {
+		return feedbackStore.plannedFeedbacks;
+	};
+
+	const getInProgressFeedbacks = (): FeedbackInterface[] | null => {
+		return feedbackStore.inProgressFeedbacks;
+	};
+
+	const getLiveFeedbacks = (): FeedbackInterface[] | null => {
+		return feedbackStore.liveFeedbacks;
+	};
+
 	const addReply = (
 		commentParent: CommentInterface,
 		newComment: CommentInterface,
@@ -90,5 +105,8 @@ export const useFeedback = (): UseFeedbackOutput => {
 		addReply,
 		selectCategory,
 		getNbComments,
+		getPlannedFeedbacks,
+		getInProgressFeedbacks,
+		getLiveFeedbacks,
 	};
 };

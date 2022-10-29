@@ -22,6 +22,7 @@ export default defineNuxtConfig({
 			'~/components',
 			'~/features/home',
 			'~/features/feedback',
+			'~/features/roadmap',
 			'~/enums',
 			'~/constants',
 		],

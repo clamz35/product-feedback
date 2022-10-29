@@ -1,6 +1,11 @@
 <template>
 	<Tag @click="addVote()">
-		<span class="flex flex-col gap-2 items-center">
+		<span
+			class="flex gap-2 items-center"
+			:class="{
+				'flex-col': !isInline,
+			}"
+		>
 			<Icon icon="fa-brand fa-chevron-up" class="leading-none" /><span
 				class="leading-none"
 				>{{ nbVotes }}</span
@@ -16,9 +21,11 @@ import Tag from './Tag.vue';
 const props = withDefaults(
 	defineProps<{
 		initialNbVotes?: number;
+		isInline?: boolean;
 	}>(),
 	{
 		initialNbVotes: 0,
+		isInline: false,
 	},
 );
 
