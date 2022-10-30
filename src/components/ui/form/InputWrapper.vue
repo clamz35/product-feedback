@@ -11,6 +11,7 @@
 			:disabled="disabled"
 			:maxlength="maxlength"
 			:placeholder="placeholder"
+			:focus="focus"
 			v-model="value"
 		></component>
 		<span
@@ -44,6 +45,7 @@ const props = defineProps<{
 	maxlength?: number;
 	placeholder?: string;
 	modelValue?: unknown;
+	focus?: boolean;
 }>();
 
 const components: ComponentsMap = {

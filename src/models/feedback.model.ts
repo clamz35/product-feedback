@@ -9,6 +9,7 @@ export interface FeedbackInterface {
 	state: PRODUCT_STATE_ENUM;
 	category?: CategoryInterface;
 	comments?: CommentInterface[];
+	nbVotes: number;
 }
 
 export class Feedback implements FeedbackInterface {
@@ -18,6 +19,7 @@ export class Feedback implements FeedbackInterface {
 	state!: PRODUCT_STATE_ENUM;
 	category?: CategoryInterface;
 	comments?: CommentInterface[];
+	nbVotes: number;
 	constructor({
 		id,
 		name,
@@ -25,6 +27,7 @@ export class Feedback implements FeedbackInterface {
 		state,
 		category,
 		comments,
+		nbVotes,
 	}: FeedbackInterface) {
 		this.id = id;
 		this.name = name;
@@ -32,6 +35,7 @@ export class Feedback implements FeedbackInterface {
 		this.state = state;
 		this.category = category;
 		this.comments = comments;
+		this.nbVotes = nbVotes;
 	}
 
 	toJSON(): this {

@@ -7,4 +7,5 @@ export interface FeedbackRequestInterface {
 	state: PRODUCT_STATE_ENUM;
 	category?: number;
 	comments?: number[];
+	nbVotes: number;
 }

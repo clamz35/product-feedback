@@ -9,4 +9,5 @@ export interface FeedbackApiInterface {
 	state: PRODUCT_STATE_ENUM;
 	category?: number;
 	comments?: StrapiCollectionResponse<CommentApiInterface>;
+	nbVotes: number;
 }

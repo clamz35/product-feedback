@@ -1,5 +1,6 @@
 import { Ref } from 'nuxt/dist/app/compat/capi';
 import { storeToRefs } from 'pinia';
+import { SORT_ENUM } from '~~/enums/sort.enum';
 import { FeedbackApiInterface } from '~~/models/api/feedback-api.model';
 import { StrapiResponse } from '~~/models/api/strapi-response.model';
 import { CategoryInterface } from '~~/models/category.model';
@@ -7,13 +8,21 @@ import { CommentInterface } from '~~/models/comment.model';
 import { FeedbackInterface } from '~~/models/feedback.model';
 import { useAccountStore } from '~~/store/account.store';
 import { useFeedbackStore } from '~~/store/feedback.store';
+import { useFeedbackApi } from './api/useFeedbackApi';
 
+type FetchFeedbacksParams = {
+	category?: number | null;
+	sort?: {
+		name: string;
+		direction: SORT_ENUM;
+	};
+};
 interface UseFeedbackOutput {
 	feedbacks: Ref<FeedbackInterface[] | null>;
 	feedback: Ref<FeedbackInterface | null>;
 	categorySelected: Ref<CategoryInterface | null>;
 	fetchFeedback: (id: number) => Promise<void>;
-	fetchFeedbacks: () => Promise<void>;
+	fetchFeedbacks: (params: FetchFeedbacksParams) => Promise<void>;
 	createFeedback: (feedback: FeedbackInterface) => void;
 	updateFeedback: (feedback: FeedbackInterface) => void;
 	addComment: (comment: CommentInterface) => void;
@@ -21,6 +30,7 @@ interface UseFeedbackOutput {
 		commentParent: CommentInterface,
 		newComment: CommentInterface,
 	) => void;
+	addUpVote: (feedbackId: number, nbVote: number) => void;
 	selectCategory: (category: CategoryInterface | null) => void;
 	getNbComments: (feedback: FeedbackInterface) => number;
 	getPlannedFeedbacks: () => FeedbackInterface[] | null;
@@ -31,11 +41,29 @@ interface UseFeedbackOutput {
 export const useFeedback = (): UseFeedbackOutput => {
 	const feedbackStore = useFeedbackStore();
 	const accountStore = useAccountStore();
+	const { categories } = useCategory();
+	const { updateFeedback: updateFeedbackApi } = useFeedbackApi();
 
 	const { feedbacks, feedback, categorySelected } = storeToRefs(feedbackStore);
 
-	const fetchFeedbacks = (): Promise<void> => {
-		return feedbackStore.fetchFeedbacks();
+	const fetchFeedbacks = ({
+		category: categoryId,
+		sort,
+	}: FetchFeedbacksParams): Promise<void> => {
+		let category: CategoryInterface | null | undefined = null;
+
+		if (categories.value && categoryId) {
+			category = categories.value.find(({ id }) => id === categoryId);
+
+			if (!category) {
+				throw new Error(`Category with ${categoryId} was not found`);
+			}
+		}
+
+		return feedbackStore.fetchFeedbacks({
+			category,
+			sort,
+		});
 	};
 
 	const fetchFeedback = async (id: number): Promise<void> => {
@@ -93,6 +121,10 @@ export const useFeedback = (): UseFeedbackOutput => {
 		});
 	};
 
+	const addUpVote = (feedbackId: number, nbVotes: number): void => {
+		feedbackStore.addUpVote(feedbackId, nbVotes);
+	};
+
 	return {
 		feedbacks,
 		feedback,
@@ -103,6 +135,7 @@ export const useFeedback = (): UseFeedbackOutput => {
 		updateFeedback,
 		addComment,
 		addReply,
+		addUpVote,
 		selectCategory,
 		getNbComments,
 		getPlannedFeedbacks,

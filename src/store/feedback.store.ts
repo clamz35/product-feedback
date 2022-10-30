@@ -3,6 +3,7 @@ import { useCommentApi } from '~~/composables/api/useCommentApi';
 import { useFeedbackApi } from '~~/composables/api/useFeedbackApi';
 import { commentApiConverter } from '~~/converters/comment.converter';
 import { PRODUCT_STATE_ENUM } from '~~/enums/product-state.enum';
+import { SORT_ENUM } from '~~/enums/sort.enum';
 import { FeedbackApiInterface } from '~~/models/api/feedback-api.model';
 import {
 	StrapiData,
@@ -17,7 +18,18 @@ interface FeedbackState {
 	feedbacks: FeedbackInterface[] | null;
 	feedback: FeedbackInterface | null;
 	categorySelected: CategoryInterface | null;
+	sort: FeedbackSort | null;
 }
+
+type FeedbackSort = {
+	name: string;
+	direction: SORT_ENUM;
+};
+
+type FectFeedbacksParams = {
+	category?: CategoryInterface | null;
+	sort?: FeedbackSort;
+} | null;
 
 export const useFeedbackStore = defineStore({
 	id: 'feedbacks-store',
@@ -25,6 +37,7 @@ export const useFeedbackStore = defineStore({
 		feedbacks: null,
 		categorySelected: null,
 		feedback: null,
+		sort: null,
 	}),
 	getters: {
 		plannedFeedbacks(): FeedbackInterface[] | null {
@@ -44,10 +57,13 @@ export const useFeedbackStore = defineStore({
 		},
 	},
 	actions: {
-		async fetchFeedbacks(): Promise<void> {
-			this.feedbacks = await useFeedbackApi().fetchFeedbacks(
-				this.categorySelected,
-			);
+		async fetchFeedbacks(params: FectFeedbacksParams = null): Promise<void> {
+			this.categorySelected = params?.category ?? this.categorySelected;
+			this.sort = params?.sort ?? this.sort;
+			this.feedbacks = await useFeedbackApi().fetchFeedbacks({
+				category: this.categorySelected,
+				sort: this.sort,
+			});
 		},
 
 		async fetchFeedback(id: number): Promise<void> {
@@ -108,6 +124,18 @@ export const useFeedbackStore = defineStore({
 				parentComment.comments = [];
 			}
 			parentComment.comments?.push(newComment);
+		},
+
+		async addUpVote(feedbackId: number, nbVotes: number) {
+			const { updateFeedback } = useFeedbackApi();
+			const feedback = this.feedbacks?.find((f) => f.id === feedbackId);
+
+			if (!feedback) {
+				throw new Error('[addUpVote] feedback was not found');
+			}
+
+			feedback.nbVotes = nbVotes;
+			await updateFeedback(feedback);
 		},
 	},
 });

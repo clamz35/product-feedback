@@ -26,8 +26,10 @@ export const feedbackApiConverter: ApiConverter<
 				commentsData.map((comment): CommentInterface => {
 					return commentApiConverter.toModel(comment);
 				}),
+			nbVotes: feedbackApi.attributes.nbVotes,
 		});
 	},
+
 	toRequestModel: function ({
 		id,
 		detail,
@@ -35,6 +37,7 @@ export const feedbackApiConverter: ApiConverter<
 		state,
 		category,
 		comments,
+		nbVotes,
 	}: FeedbackInterface): FeedbackRequestInterface {
 		return {
 			id,
@@ -43,6 +46,7 @@ export const feedbackApiConverter: ApiConverter<
 			state,
 			category: category?.id,
 			comments: comments && comments?.map((comment) => comment.id as number),
+			nbVotes,
 		};
 	},
 };

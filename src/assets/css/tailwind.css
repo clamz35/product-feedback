@@ -3,6 +3,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer components {
 	.h1 {
 		@apply text-xxl font-bold tracking-tightest;
@@ -19,6 +20,14 @@
 	.h4 {
 		@apply text-s font-bold tracking-tight;
 	}
+
+
+}
+
+@layer utilities {
+  .scrollbar-gutter-stable {
+    scrollbar-gutter: stable;
+  }
 }
 
 html,

@@ -1,6 +1,6 @@
 <template>
 	<span
-		class="rounded px-4 py-1.5 w-fit font-semibold hover:text-accent-secondary-500 hover:bg-secondary-600 cursor-pointer transition-colors select-none"
+		class="rounded inline-block px-4 py-1.5 w-fit font-semibold hover:text-accent-secondary-500 hover:bg-secondary-600 cursor-pointer transition-colors select-none"
 		:class="{
 			'bg-secondary-500 text-accent-secondary-500': !props.isActive,
 			'bg-accent-secondary-500 text-white': props.isActive,

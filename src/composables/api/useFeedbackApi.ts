@@ -1,4 +1,5 @@
 import { feedbackApiConverter } from '~~/converters/feedback.converter';
+import { SORT_ENUM } from '~~/enums/sort.enum';
 import { FeedbackApiInterface } from '~~/models/api/feedback-api.model';
 import {
 	StrapiCollectionResponse,
@@ -11,10 +12,21 @@ import { isStrapiDataArray } from '~~/utils/strapi.utils';
 
 type FeedbacksEndpointResponse = StrapiCollectionResponse<FeedbackApiInterface>;
 
+type FeedbackSort = {
+	name: string;
+	direction: SORT_ENUM;
+};
+
+type FetchFeedbacksParams = {
+	category?: CategoryInterface | null;
+	sort: FeedbackSort | null;
+};
+
 interface UseFeedbackApiOutput {
-	fetchFeedbacks: (
-		categorySelected?: CategoryInterface | null,
-	) => Promise<FeedbackInterface[] | null>;
+	fetchFeedbacks: ({
+		category,
+		sort,
+	}: FetchFeedbacksParams) => Promise<FeedbackInterface[] | null>;
 
 	fetchFeedback: (id: number) => Promise<FeedbackInterface>;
 
@@ -30,14 +42,19 @@ interface UseFeedbackApiOutput {
 const API_PREFIX = '/api/feedbacks';
 
 export const useFeedbackApi = (): UseFeedbackApiOutput => {
-	const fetchFeedbacks = (
-		categorySelected?: CategoryInterface | null,
-	): Promise<FeedbackInterface[] | null> => {
+	const fetchFeedbacks = ({
+		category: categorySelected,
+		sort,
+	}: FetchFeedbacksParams): Promise<FeedbackInterface[] | null> => {
 		const params: Record<string, unknown> = {};
 
 		if (categorySelected) {
 			params[`filters[category][id]`] = categorySelected.id;
 		}
+
+		params[`sort`] = sort?.name
+			? `${sort.name}:${sort.direction ?? 'asc'}`
+			: 'nbVotes:desc';
 
 		return useHttp<FeedbacksEndpointResponse>(API_PREFIX, {
 			params,

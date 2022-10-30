@@ -1,14 +1,21 @@
 <template>
 	<UiCard class="flex flex-wrap gap-x-2 gap-y-3">
-		<UiTag :is-active="categorySelected === null" @click="selectCategory(null)"
-			>All</UiTag
-		>
-		<UiTag
+		<NuxtLink to="/">
+			<UiTag
+				:is-active="categorySelected === null"
+				@click="selectCategory(null)"
+			>
+				All
+			</UiTag>
+		</NuxtLink>
+		<NuxtLink
+			:to="{ path: '/', query: { category: category.id } }"
 			v-for="category in categories"
-			@click="selectCategory(category)"
-			:is-active="categorySelected === category"
-			>{{ category.name }}</UiTag
 		>
+			<UiTag :is-active="categorySelected === category">{{
+				category.name
+			}}</UiTag>
+		</NuxtLink>
 	</UiCard>
 </template>
 

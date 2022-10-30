@@ -12,16 +12,31 @@
 </template>
 
 <script lang="ts" setup>
+const route = useRoute();
+
 // Categories
 const { fetchCategories } = useCategory();
-useAsyncData('categories', () => {
+await useAsyncData('categories', () => {
 	return fetchCategories();
 });
 
 //  Feedbacks
 const { fetchFeedbacks } = useFeedback();
 
-useAsyncData('feedbacks', () => {
-	return fetchFeedbacks();
+const categoryQuery = computed((): number | null => {
+	const category = route.query.category;
+	if (category && typeof category !== 'string') {
+		throw new Error('Category query must be a string or null');
+	}
+
+	return category ? Number(category) : null;
+});
+
+const { refresh } = await useAsyncData('feedbacks', () => {
+	return fetchFeedbacks({ category: categoryQuery.value });
+});
+
+watch(categoryQuery, () => {
+	refresh();
 });
 </script>

@@ -1,5 +1,5 @@
 <template>
-	<div class="h-full py-24 flex flex-col items-center">
+	<div class="h-full py-24 flex flex-col items-center stabl">
 		<NuxtPage />
 	</div>
 </template>
@@ -13,7 +13,7 @@ useHead({
 	charset: 'utf-8',
 	meta: [{ name: 'description', content: 'My amazing site.' }],
 	htmlAttrs: {
-		class: 'font-jost text-primary-500',
+		class: 'font-jost text-primary-500 scrollbar-gutter-stable',
 		lang: 'fr',
 	},
 	bodyAttrs: {

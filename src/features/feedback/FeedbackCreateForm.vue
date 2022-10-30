@@ -14,6 +14,7 @@
 					type="text"
 					title="Feedback Title"
 					v-model="form.title"
+					:focus="true"
 				></InputWrapper>
 			</FeedbackFormGroup>
 			<FeedbackFormGroup

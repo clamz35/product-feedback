@@ -1,8 +1,12 @@
 <template>
-	<input type="text" v-model="value" />
+	<input ref="textField" type="text" v-model="value" />
 </template>
 <script lang="ts" setup>
-const props = defineProps<{ errorMessage?: string; modelValue: string }>();
+const props = defineProps<{
+	errorMessage?: string;
+	modelValue: string;
+	focus?: boolean;
+}>();
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -13,6 +17,17 @@ const value = computed({
 	set(value) {
 		emit('update:modelValue', value);
 	},
+});
+
+const textField = ref<HTMLInputElement>();
+if (props.focus) {
+	nextTick(() => textField.value?.focus());
+}
+
+onMounted(() => {
+	if (props.focus) {
+		nextTick(() => textField.value?.focus());
+	}
 });
 </script>
 
