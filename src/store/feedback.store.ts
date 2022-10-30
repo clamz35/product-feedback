@@ -136,6 +136,7 @@ export const useFeedbackStore = defineStore({
 
 			feedback.nbVotes = nbVotes;
 			await updateFeedback(feedback);
+			await this.fetchFeedbacks();
 		},
 	},
 });

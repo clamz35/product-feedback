@@ -40,7 +40,7 @@ const addVoteDebounced = useDebounceFn(
 	() => {
 		emits('addVote', nbVotes.value);
 	},
-	1000,
+	500,
 	{ maxWait: 5000 },
 );
 
