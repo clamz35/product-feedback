@@ -8,13 +8,12 @@ import { CommentInterface } from '~~/models/comment.model';
 import { FeedbackInterface } from '~~/models/feedback.model';
 import { useAccountStore } from '~~/store/account.store';
 import { useFeedbackStore } from '~~/store/feedback.store';
-import { useFeedbackApi } from './api/useFeedbackApi';
 
-type FetchFeedbacksParams = {
+export type FetchFeedbacksParams = {
 	category?: number | null;
 	sort?: {
 		name: string;
-		direction: SORT_ENUM;
+		direction?: SORT_ENUM | null;
 	};
 };
 interface UseFeedbackOutput {
@@ -42,7 +41,6 @@ export const useFeedback = (): UseFeedbackOutput => {
 	const feedbackStore = useFeedbackStore();
 	const accountStore = useAccountStore();
 	const { categories } = useCategory();
-	const { updateFeedback: updateFeedbackApi } = useFeedbackApi();
 
 	const { feedbacks, feedback, categorySelected } = storeToRefs(feedbackStore);
 

@@ -14,7 +14,7 @@ type FeedbacksEndpointResponse = StrapiCollectionResponse<FeedbackApiInterface>;
 
 type FeedbackSort = {
 	name: string;
-	direction: SORT_ENUM;
+	direction?: SORT_ENUM | null;
 };
 
 type FetchFeedbacksParams = {
@@ -47,6 +47,8 @@ export const useFeedbackApi = (): UseFeedbackApiOutput => {
 		sort,
 	}: FetchFeedbacksParams): Promise<FeedbackInterface[] | null> => {
 		const params: Record<string, unknown> = {};
+		params['populate[comments][populate][account][populate]'] = '*';
+		params['populate[comments][populate][comments][populate]'] = '*';
 
 		if (categorySelected) {
 			params[`filters[category][id]`] = categorySelected.id;

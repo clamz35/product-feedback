@@ -23,7 +23,7 @@ interface FeedbackState {
 
 type FeedbackSort = {
 	name: string;
-	direction: SORT_ENUM;
+	direction?: SORT_ENUM | null;
 };
 
 type FectFeedbacksParams = {

@@ -12,6 +12,9 @@
 </template>
 
 <script lang="ts" setup>
+import { FetchFeedbacksParams } from '~~/composables/useFeedback';
+import { SORT_ENUM } from '~~/enums/sort.enum';
+
 const route = useRoute();
 
 // Categories
@@ -32,11 +35,39 @@ const categoryQuery = computed((): number | null => {
 	return category ? Number(category) : null;
 });
 
-const { refresh } = await useAsyncData('feedbacks', () => {
-	return fetchFeedbacks({ category: categoryQuery.value });
+const sortByQuery = computed((): string | null => {
+	const sortBy = route.query.sortBy;
+	if (sortBy && typeof sortBy !== 'string') {
+		throw new Error('sortBy query must be a string or null');
+	}
+
+	return sortBy;
 });
 
-watch(categoryQuery, () => {
+const sortOrder = computed((): SORT_ENUM | null => {
+	const sortOrder = route.query.sortOrder;
+	if (sortOrder && typeof sortOrder !== 'string') {
+		throw new Error('sortOrder query must be a string or null');
+	}
+
+	return sortOrder === 'asc' ? SORT_ENUM.ASC : SORT_ENUM.DESC;
+});
+
+const { refresh } = await useAsyncData('feedbacks', () => {
+	const params: FetchFeedbacksParams = {
+		category: categoryQuery.value,
+	};
+
+	if (sortByQuery.value) {
+		params['sort'] = {
+			name: sortByQuery.value,
+			direction: sortOrder.value ? sortOrder.value : null,
+		};
+	}
+	return fetchFeedbacks(params);
+});
+
+watch([categoryQuery, sortByQuery, sortOrder], () => {
 	refresh();
 });
 </script>
